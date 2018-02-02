@@ -1,0 +1,1 @@
+console.error("SyntaxError: D:/_GithubTest/Electron/Test/app/app.js: Unexpected token (12:10) while parsing file: D:\\_GithubTest\\Electron\\Test\\app\\app.js");
