@@ -15,7 +15,9 @@ app.on('ready', () => {
     mainWindow.loadURL("file://" + __dirname + "/countdown.html");
 
     ipc.on('countdown-start', () => {
-        countdown();
+        countdown((count) => {
+            mainWindow.webContents.send('countdown', count);
+        });
     });
 
     mainWindow.on('closed', () => {
