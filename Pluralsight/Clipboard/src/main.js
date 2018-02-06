@@ -31,7 +31,7 @@ app.on('ready', () => {
 
     checkClipboardForChange(clipboard, (text) => {
         stack = addToStack(text, stack);
-        let clipboardMenu = getClipboardMenu(stack);
+        let clipboardMenu = getClipboardMenu(clipboard, stack);
         console.log(clipboardMenu);
         tray.setContextMenu(Menu.buildFromTemplate(clipboardMenu));
     });
@@ -49,10 +49,14 @@ function formatItem(item) {
     return item && item.length > ITEM_MAX_LENGTH ? item.substr(0, ITEM_MAX_LENGTH) + '...' : item
   }
 
-function getClipboardMenu(stack) {
+function getClipboardMenu(clipboard, stack) {
     return stack.map((item, i) => {
         return {
-            label: "Copy: " + formatItem(item)
+            label: "Copy: " + formatItem(item),
+            click: () => {
+                console.log(item);
+                clipboard.writeText(item);
+            }
         };
     });
 }
