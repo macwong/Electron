@@ -1,7 +1,10 @@
 const electron = require('electron');
 const path = require('path');
 
-const { app, clipboard, Menu, Tray } = electron;
+const { app, clipboard, globalShortcut, Menu, Tray } = electron;
+
+const STACK_SIZE = 5;
+const ITEM_MAX_LENGTH = 20;
 
 function checkClipboardForChange(clipboard, onChange) {
     let cache = clipboard.readText();
@@ -32,13 +35,25 @@ app.on('ready', () => {
     checkClipboardForChange(clipboard, (text) => {
         stack = addToStack(text, stack);
         let clipboardMenu = getClipboardMenu(clipboard, stack);
-        console.log(clipboardMenu);
         tray.setContextMenu(Menu.buildFromTemplate(clipboardMenu));
+
+        registerShortcuts(globalShortcut, clipboard, stack);
     });
 });
 
-const STACK_SIZE = 5;
-const ITEM_MAX_LENGTH = 20;
+app.on('will-quit', () => {
+    globalShortcut.unregisterAll();
+})
+
+function registerShortcuts(globalShortcut, clipboard, stack) {
+    globalShortcut.unregisterAll();
+
+    for (let i = 0; i < STACK_SIZE; i++) {
+        globalShortcut.register('CommandOrControl+' + (i + 1), () => {
+            clipboard.writeText(stack[i]);
+        })
+    }
+}
 
 function addToStack(myText, stack) {
     return [myText].concat(stack.length >= STACK_SIZE ? stack.slice(0, stack.length - 1) : stack);
@@ -53,8 +68,8 @@ function getClipboardMenu(clipboard, stack) {
     return stack.map((item, i) => {
         return {
             label: "Copy: " + formatItem(item),
+            accelerator: "CommandOrControl+" + (i + 1),
             click: () => {
-                console.log(item);
                 clipboard.writeText(item);
             }
         };
