@@ -1,6 +1,5 @@
 {
-  "name": "MenuDemo",
-  "productName": "Menu Demo",
+  "name": "SystemTray",
   "version": "1.0.0",
   "description": "",
   "main": "src/main.js",
