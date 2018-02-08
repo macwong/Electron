@@ -5,10 +5,9 @@ let mainWindow;
 
 app.on('ready', () => {
     mainWindow = new BrowserWindow({
-        // show: false
+        show: false
     });
 
-    console.log(__dirname)
     mainWindow.loadURL("file://" + __dirname + "/capture.html");
 
     mainWindow.on("close", () => {
