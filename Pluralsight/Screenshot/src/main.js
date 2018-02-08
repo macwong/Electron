@@ -5,7 +5,7 @@ let mainWindow;
 
 app.on('ready', () => {
     mainWindow = new BrowserWindow({
-        show: false
+        // show: false
     });
 
     console.log(__dirname)
@@ -15,7 +15,7 @@ app.on('ready', () => {
         mainWindow = null;
     });
 
-    globalShortcut.register('Control+Shift+S', () => {
-        console.log('test');
+    globalShortcut.register('Control+Shift+D', () => {
+        mainWindow.webContents.send('capture', app.getPath('pictures'));
     });
 });
