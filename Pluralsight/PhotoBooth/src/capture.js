@@ -39,11 +39,27 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     photosEl.addEventListener("click", (e) => {
-        const photos = Array.from(document.querySelectorAll(".photoImg"));
-        const index = photos.findIndex((el) => el === e.target);
+        if (e.target.className === "photoImg") {
+            photoOp(e.target, (index) => {
+                shell.showItemInFolder(images.getFromCache(index));
+            });
+        }
+        else if (e.target.className === "photoClose") {
+            photoOp(e.target, (index) => {
+                 images.rm(images.getFromCache(index));
 
-        if (index !== undefined && index !== null && index >= 0) {
-            shell.showItemInFolder(images.getFromCache(index));
+                const photoDiv = e.target.closest(".photo");
+                photoDiv.remove();
+            });
         }
     });
 });
+
+function photoOp(target, callback) {
+    const photos = Array.from(document.querySelectorAll("." + target.className));
+    const index = photos.findIndex((el) => el === target);
+
+    if (index !== undefined && index !== null && index >= 0) {
+        callback(index);
+    }
+}

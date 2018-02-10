@@ -37,6 +37,21 @@ exports.mkdir = (path) => {
     });
 };
 
+exports.rm = (filePath) => {
+    fs.stat(filePath, (err, stats) => {
+        if (err === null) {
+            fs.unlink(filePath, (fileErr) => {
+                if (fileErr !== null) {
+                    console.log(fileErr);
+                }
+            });
+        }
+        else {
+            console.log(err);
+        }
+    });
+};
+
 exports.cache = (imgPath) => {
     images = images.concat([imgPath]);
     return images;
