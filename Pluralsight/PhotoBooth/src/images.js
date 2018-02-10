@@ -15,3 +15,18 @@ exports.save = (picturesPath, contents) => {
 exports.getPhotoPath = (app) => {
     return path.join(app.getPath("pictures"), "PhotoBooth");
 };
+
+exports.mkdir = (path) => {
+    fs.stat(path, (err, stats) => {
+        if (err != null && err.code !== "ENOENT") {
+            console.log(err);
+        }
+        else if (err || !stats.isDirectory()) {
+            fs.mkdir(path, (err) => {
+                if (err != null) {
+                    console.log(err);
+                }
+            });
+        }
+    });
+};

@@ -15,6 +15,8 @@ app.on("ready", () => {
     mainWindow.loadURL("file://" + __dirname + "/capture.html");
     mainWindow.webContents.openDevTools();
 
+    images.mkdir(images.getPhotoPath(app));
+
     mainWindow.on("close", () => {
         mainWindow = null;
     })
