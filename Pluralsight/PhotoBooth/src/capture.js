@@ -46,10 +46,10 @@ window.addEventListener("DOMContentLoaded", () => {
         }
         else if (e.target.className === "photoClose") {
             photoOp(e.target, (index) => {
-                 images.rm(images.getFromCache(index));
-
-                const photoDiv = e.target.closest(".photo");
-                photoDiv.remove();
+                 images.rm(index, () => {
+                    const photoDiv = e.target.closest(".photo");
+                    photoDiv.remove();
+                 });
             });
         }
     });

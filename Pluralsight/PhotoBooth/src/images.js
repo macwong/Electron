@@ -6,7 +6,8 @@ let images = [];
 exports.save = (picturesPath, contents, callback) => {
     const data = contents.replace(/^data:image\/png;base64,/, "");
     const dateVal = new Date();
-    const fileName = dateVal.getFullYear().toString() + (dateVal.getMonth() + 1).toString() + dateVal.getDate().toString() + "_" + dateVal.getHours().toString() + dateVal.getMinutes().toString();
+    const fileName = dateVal.getFullYear().toString() + (dateVal.getMonth() + 1).toString() + dateVal.getDate().toString() 
+                        + "_" + dateVal.getHours().toString() + dateVal.getMinutes().toString()+ dateVal.getSeconds().toString();
     const fullPath = path.join(picturesPath, fileName + ".png");
     fs.writeFile(fullPath, data, { encoding: "base64" }, (err) => {
         if (err != null) {
@@ -37,12 +38,16 @@ exports.mkdir = (path) => {
     });
 };
 
-exports.rm = (filePath) => {
-    fs.stat(filePath, (err, stats) => {
+exports.rm = (index, done) => {
+    fs.stat(images[index], (err, stats) => {
         if (err === null) {
-            fs.unlink(filePath, (fileErr) => {
+            fs.unlink(images[index], (fileErr) => {
                 if (fileErr !== null) {
                     console.log(fileErr);
+                }
+                else {
+                    images.splice(index, 1);
+                    done();
                 }
             });
         }
