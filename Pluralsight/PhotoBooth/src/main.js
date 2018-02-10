@@ -11,7 +11,7 @@ app.on("ready", () => {
         resizable: false
     });
 
-    mainWindow.loadURL("file://" + __dirname + "capture.html");
+    mainWindow.loadURL("file://" + __dirname + "/capture.html");
     mainWindow.webContents.openDevTools();
 
     mainWindow.on("close", () => {
