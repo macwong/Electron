@@ -1,14 +1,20 @@
 const path = require("path");
 const fs = require("fs");
 
-exports.save = (picturesPath, contents) => {
+let images = [];
+
+exports.save = (picturesPath, contents, callback) => {
     const data = contents.replace(/^data:image\/png;base64,/, "");
     const dateVal = new Date();
     const fileName = dateVal.getFullYear().toString() + (dateVal.getMonth() + 1).toString() + dateVal.getDate().toString() + "_" + dateVal.getHours().toString() + dateVal.getMinutes().toString();
-    fs.writeFile(path.join(picturesPath, fileName + ".png"), data, { encoding: "base64" }, (err) => {
+    const fullPath = path.join(picturesPath, fileName + ".png");
+    fs.writeFile(fullPath, data, { encoding: "base64" }, (err) => {
         if (err != null) {
             console.log(err);
         }
+
+        this.cache(fullPath);
+        callback(err, fullPath);
     });
 };
 
@@ -29,4 +35,13 @@ exports.mkdir = (path) => {
             });
         }
     });
+};
+
+exports.cache = (imgPath) => {
+    images = images.concat([imgPath]);
+    return images;
+};
+
+exports.getFromCache = (index) => {
+    return images[index];
 };

@@ -24,5 +24,9 @@ app.on("ready", () => {
 
 ipc.on("image-captured", (evt, bytes) => {
     const picPath = images.getPhotoPath(app);
-    images.save(picPath, bytes);
+    images.save(picPath, bytes, (err, imgPath) => {
+        if (err !== null) {
+            images.cache(imgPath);
+        }
+    });
 });

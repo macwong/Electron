@@ -1,7 +1,9 @@
 const electron = require("electron")
+const { ipcRenderer: ipc, shell, remote } = electron;
+
 const video = require("./video")
 const countdown = require("./countdown")
-const { ipcRenderer: ipc } = electron;
+const images = remote.require("./images")
 
 function formatImgTag(doc, bytes) {
     const div = doc.createElement("div");
@@ -34,5 +36,14 @@ window.addEventListener("DOMContentLoaded", () => {
             ipc.send("image-captured", bytes);
             photosEl.appendChild(formatImgTag(document, bytes));
         });
+    });
+
+    photosEl.addEventListener("click", (e) => {
+        const photos = Array.from(document.querySelectorAll(".photoImg"));
+        const index = photos.findIndex((el) => el === e.target);
+
+        if (index !== undefined && index !== null && index >= 0) {
+            shell.showItemInFolder(images.getFromCache(index));
+        }
     });
 });
