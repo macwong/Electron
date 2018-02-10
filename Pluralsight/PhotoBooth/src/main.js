@@ -1,6 +1,7 @@
 const electron = require("electron");
+const images = require("./images");
 
-const { app, BrowserWindow } = electron;
+const { app, BrowserWindow, ipcMain: ipc } = electron;
 
 let mainWindow = null;
 
@@ -17,4 +18,9 @@ app.on("ready", () => {
     mainWindow.on("close", () => {
         mainWindow = null;
     })
+});
+
+ipc.on("image-captured", (evt, bytes) => {
+    const picPath = images.getPhotoPath(app);
+    images.save(picPath, bytes);
 });
