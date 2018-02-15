@@ -11,6 +11,13 @@ const effects = {
     }
 };
 
+exports.getEffectList = () => {
+    return [
+        "vanilla",
+        "ascii"
+    ];
+};
+
 exports.choose = (seriously, src, target, effectName = "vanilla") => {
     effects[effectName](seriously, src, target);
 };

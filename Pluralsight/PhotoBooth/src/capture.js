@@ -14,10 +14,7 @@ let videoSrc;
 let canvasTarget;
 let currentEffect = "vanilla";
 
-const effectList = [
-    "vanilla",
-    "ascii"
-];
+const effectList = effects.getEffectList();
 
 function formatImgTag(doc, bytes) {
     const div = doc.createElement("div");
