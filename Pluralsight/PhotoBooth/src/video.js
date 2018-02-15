@@ -1,4 +1,4 @@
-exports.init = (navigator, videoEl) => {
+exports.init = (navigator) => {
     navigator.mediaDevices.getUserMedia({ 
         video: {
             mandatory: {
@@ -10,7 +10,7 @@ exports.init = (navigator, videoEl) => {
         },
         audio: false
     }).then((stream) => {
-        videoEl.src = URL.createObjectURL(stream);
+        video.src = URL.createObjectURL(stream);
     }).catch((reason) => {
         alert('could not connect stream');
     })

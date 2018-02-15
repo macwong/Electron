@@ -32,22 +32,22 @@ window.addEventListener("DOMContentLoaded", () => {
     const photosEl = document.querySelector(".photosContainer");
     const counterEl = document.getElementById("counter");
     const flashEl = document.getElementById("flash");
-    
-    const ctx = canvasEl.getContext("2d");
 
     seriously = new Seriously();
     videoSrc = seriously.source("#video");
     canvasTarget = seriously.target("#canvas");
     effects.choose(seriously, videoSrc, canvasTarget, "ascii");
 
+    console.log(seriously);
+    console.log(videoSrc);
+    console.log(canvasTarget);
 
-    video.init(navigator, videoEl);
+    video.init(navigator);
 
     recordEl.addEventListener("click", () => {
         countdown.start(counterEl, 3, () => {
             flash(flashEl);
-            // const bytes = video.captureBytesFromLiveCanvas(canvasEl);
-            const bytes = video.captureBytes(ctx, videoEl, canvasEl);
+            const bytes = video.captureBytesFromLiveCanvas(canvasEl);
             ipc.send("image-captured", bytes);
             photosEl.appendChild(formatImgTag(document, bytes));
         });
