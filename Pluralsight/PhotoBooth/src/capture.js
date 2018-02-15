@@ -10,6 +10,7 @@ const effects = require("./effects")
 let seriously;
 let videoSrc;
 let canvasTarget;
+let currentEffect = "vanilla";
 
 function formatImgTag(doc, bytes) {
     const div = doc.createElement("div");
@@ -36,11 +37,7 @@ window.addEventListener("DOMContentLoaded", () => {
     seriously = new Seriously();
     videoSrc = seriously.source("#video");
     canvasTarget = seriously.target("#canvas");
-    effects.choose(seriously, videoSrc, canvasTarget, "ascii");
-
-    console.log(seriously);
-    console.log(videoSrc);
-    console.log(canvasTarget);
+    effects.choose(seriously, videoSrc, canvasTarget, currentEffect);
 
     video.init(navigator);
 
@@ -78,3 +75,10 @@ function photoOp(target, callback) {
         callback(index);
     }
 }
+
+ipc.on("effect-choose", (evt, effectName) => {
+    effects.choose(seriously, videoSrc, canvasTarget, effectName);
+    currentEffect = effectName;
+});
+
+// ipc.send("effect-choose", "ascii")

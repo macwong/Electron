@@ -1,5 +1,6 @@
 {
   "name": "PhotoBooth",
+  "productName": "PhotoBooth",
   "version": "1.0.0",
   "description": "",
   "main": "src/main.js",
