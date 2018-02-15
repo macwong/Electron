@@ -20,7 +20,7 @@ module.exports = (mainWindow) => {
         submenu: [{
             label: "Vanilla",
             click: () => {
-                mainWindow.webContents.send('effect-choose');
+                mainWindow.webContents.send('effect-choose', 'vanilla');
             }
         },
         {

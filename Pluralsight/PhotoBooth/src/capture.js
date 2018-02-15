@@ -7,10 +7,17 @@ const images = remote.require("./images")
 const flash = require("./flash")
 const effects = require("./effects")
 
+const electronLocalshortcut = require('electron-localshortcut');
+
 let seriously;
 let videoSrc;
 let canvasTarget;
 let currentEffect = "vanilla";
+
+const effectList = [
+    "vanilla",
+    "ascii"
+];
 
 function formatImgTag(doc, bytes) {
     const div = doc.createElement("div");
@@ -40,6 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
     effects.choose(seriously, videoSrc, canvasTarget, currentEffect);
 
     video.init(navigator);
+    ipc.send("effect-choose", "ascii")
 
     recordEl.addEventListener("click", () => {
         countdown.start(counterEl, 3, () => {
@@ -81,4 +89,15 @@ ipc.on("effect-choose", (evt, effectName) => {
     currentEffect = effectName;
 });
 
-// ipc.send("effect-choose", "ascii")
+ipc.on("effect-cycle", (evt) => {
+    let nextIndex = effectList.indexOf(currentEffect) + 1;
+
+    if (nextIndex >= effectList.length) {
+        nextIndex = 0;
+    }
+
+    let nextEffect = effectList[nextIndex];
+
+    effects.choose(seriously, videoSrc, canvasTarget, nextEffect);
+    currentEffect = nextEffect;
+});

@@ -1,4 +1,5 @@
 const electron = require("electron");
+const electronLocalshortcut = require("electron-localshortcut");
 const images = require("./images");
 const menuTemplate = require("./menu");
 
@@ -24,6 +25,10 @@ app.on("ready", () => {
 
     const menu = Menu.buildFromTemplate(menuTemplate(mainWindow));
     Menu.setApplicationMenu(menu);
+
+    electronLocalshortcut.register(mainWindow, 'F12', () => {
+        mainWindow.webContents.send("effect-cycle");
+    });
 });
 
 ipc.on("image-captured", (evt, bytes) => {
@@ -34,4 +39,6 @@ ipc.on("image-captured", (evt, bytes) => {
         }
     });
 });
+
+
 
